@@ -11,8 +11,16 @@ function Dashboard() {
 
     useEffect(() => {
         getIncomes()
-        getExpenses()
-    }, [])
+        if(localStorage.getItem('user')){
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user._id) {
+                getExpenses(user._id);  // Pass userId to getExpenses
+            } else {
+                console.error('No valid userId found in localStorage');
+            }
+        }
+        } 
+    , [])
 
     return (
         <DashboardStyled>

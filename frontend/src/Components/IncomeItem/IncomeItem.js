@@ -6,6 +6,7 @@ import Button from '../Button/Button';
 
 function IncomeItem({
     id,
+    userId,
     title,
     amount,
     date,
@@ -89,7 +90,7 @@ function IncomeItem({
                             color={'#fff'}
                             iColor={'#fff'}
                             hColor={'var(--color-green)'}
-                            onClick={() => deleteItem(id)}
+                            onClick={() => deleteItem(id,userId)}
                         />
                     </div>
                 </div>

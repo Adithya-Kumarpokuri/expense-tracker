@@ -15,24 +15,46 @@ export const GlobalProvider = ({children}) => {
 
     //calculate incomes
     const addIncome = async (income) => {
-        const response = await axios.post(`${BASE_URL}add-income`, income)
-            .catch((err) =>{
-                setError(err.response.data.message)
-            })
-        getIncomes()
+        try {
+            const response = await axios.post(`${BASE_URL}add-income`, income);
+            
+            
+            if(localStorage.getItem('user')){
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user._id) {
+                await getIncomes(user._id);  
+            } else {
+                console.error('No valid userId found in localStorage');
+            }
+        }
+        } catch (err) {
+            setError(err.response.data.message);
+        }
     }
-
-    const getIncomes = async () => {
-        const response = await axios.get(`${BASE_URL}get-incomes`)
-        setIncomes(response.data)
-        console.log(response.data)
+    const getIncomes= async (userId) => {
+        console.log("correction",userId)
+        try {
+         
+            const response = await axios.get(`${BASE_URL}get-incomes`, {
+                params: { userId }  
+            });
+            setIncomes(response.data);  
+            console.log(response.data);  
+        } catch (error) {
+            console.error('Error fetching expenses:', error);
+        }
+    };
+    const deleteIncome = async (id,userId) => {
+        const res  = await axios.delete(`${BASE_URL}delete-income/${id}/${userId}`)
+        if(localStorage.getItem('user')){
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user._id){
+                 await getIncomes(user._id); 
+            } else {
+                console.error('No valid userId found in localStorage');
+            }
+        }
     }
-
-    const deleteIncome = async (id) => {
-        const res  = await axios.delete(`${BASE_URL}delete-income/${id}`)
-        getIncomes()
-    }
-
     const totalIncome = () => {
         let totalIncome = 0;
         incomes.forEach((income) =>{
@@ -43,32 +65,54 @@ export const GlobalProvider = ({children}) => {
     }
 
 
-    //calculate incomes
+   
     const addExpense = async (income) => {
-        const response = await axios.post(`${BASE_URL}add-expense`, income)
-            .catch((err) =>{
-                setError(err.response.data.message)
-            })
-        getExpenses()
+        try {
+            const response = await axios.post(`${BASE_URL}add-expense`, income);
+            
+        
+            if(localStorage.getItem('user')){
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user._id) {
+                await getExpenses(user._id);  
+            } else {
+                console.error('No valid userId found in localStorage');
+            }
+        }
+        } catch (err) {
+            setError(err.response.data.message);
+        }
+    }
+    const getExpenses = async (userId) => {
+        console.log("correction",userId)
+        try {
+           
+            const response = await axios.get(`${BASE_URL}get-expenses`, {
+                params: { userId }  
+            });
+            setExpenses(response.data);  
+            console.log(response.data);  
+        } catch (error) {
+            console.error('Error fetching expenses:', error);
+        }
+    };
+    const deleteExpense = async (id,userId) => {
+        const res  = await axios.delete(`${BASE_URL}delete-expense/${id}/${userId}`)
+        if(localStorage.getItem('user')){
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user._id){
+                 await getExpenses(user._id); 
+            } else {
+                console.error('No valid userId found in localStorage');
+            }
+        }
     }
 
-    const getExpenses = async () => {
-        const response = await axios.get(`${BASE_URL}get-expenses`)
-        setExpenses(response.data)
-        console.log(response.data)
-    }
-
-    const deleteExpense = async (id) => {
-        const res  = await axios.delete(`${BASE_URL}delete-expense/${id}`)
-        getExpenses()
-    }
-
-    const totalExpenses = () => {
+    const totalExpenses = () =>{
         let totalIncome = 0;
         expenses.forEach((income) =>{
             totalIncome = totalIncome + income.amount
         })
-
         return totalIncome;
     }
 

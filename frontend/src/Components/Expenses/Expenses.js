@@ -9,9 +9,21 @@ import ExpenseForm from './ExpenseForm';
 function Expenses() {
     const {addIncome,expenses, getExpenses, deleteExpense, totalExpenses} = useGlobalContext()
 
-    useEffect(() =>{
-        getExpenses()
-    }, [])
+    useEffect(() => {
+        
+        if (localStorage.getItem('user')) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user._id){
+                console.log(user._id)
+                getExpenses(user._id);  
+            } else {
+                console.error('Invalid user data in localStorage');
+            }
+        } else {
+            console.error('No user found in localStorage');
+        }
+    }, []);
+    const user = JSON.parse(localStorage.getItem('user'));
     return (
         <ExpenseStyled>
             <InnerLayout>
@@ -23,11 +35,12 @@ function Expenses() {
                     </div>
                     <div className="incomes">
                         {expenses.map((income) => {
-                            const {_id, title, amount, date, category, description, type} = income;
+                            const {_id,title, amount, date, category, description, type} = income;
                             console.log(income)
                             return <IncomeItem
                                 key={_id}
                                 id={_id} 
+                                userId={user._id}
                                 title={title} 
                                 description={description} 
                                 amount={amount} 

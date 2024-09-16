@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState} from 'react'
 import styled from 'styled-components'
 import avatar from '../../img/avatar.png'
 import { signout } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
+import { Link} from 'react-router-dom'
 
 function Navigation({active, setActive}) {
-    
     return (
         <NavStyled>
             <div className="user-con">
@@ -28,9 +28,11 @@ function Navigation({active, setActive}) {
                 })}
             </ul>
             <div className="bottom-nav">
-                <li>
-                    {signout} Sign Out
-                </li>
+            <Link to="/"> 
+                    <li>
+                        {signout} Sign Out
+                    </li>
+                </Link>
             </div>
         </NavStyled>
     )

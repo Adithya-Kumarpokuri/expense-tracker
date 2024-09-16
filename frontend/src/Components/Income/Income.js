@@ -8,9 +8,20 @@ import IncomeItem from '../IncomeItem/IncomeItem';
 function Income() {
     const {addIncome,incomes, getIncomes, deleteIncome, totalIncome} = useGlobalContext()
 
-    useEffect(() =>{
-        getIncomes()
-    }, [])
+    useEffect(() => {
+        if (localStorage.getItem('user')) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user._id){
+                console.log(user._id)
+                getIncomes(user._id); 
+            } else {
+                console.error('Invalid user data in localStorage');
+            }
+        } else {
+            console.error('No user found in localStorage');
+        }
+    }, []);
+    const user = JSON.parse(localStorage.getItem('user'));
     return (
         <IncomeStyled>
             <InnerLayout>
@@ -26,6 +37,7 @@ function Income() {
                             return <IncomeItem
                                 key={_id}
                                 id={_id} 
+                                userId={user._id}
                                 title={title} 
                                 description={description} 
                                 amount={amount} 

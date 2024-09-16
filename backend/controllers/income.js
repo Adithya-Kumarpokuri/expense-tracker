@@ -1,50 +1,89 @@
 const IncomeSchema= require("../models/IncomeModel")
-
-
+const User =require('../models/UserModel')
+const mongoose = require('mongoose');
 exports.addIncome = async (req, res) => {
-    const {title, amount, category, description, date}  = req.body
+    const { title, amount, category, description, userId, date } = req.body;
 
-    const income = IncomeSchema({
+   
+    const income = new IncomeSchema({
         title,
         amount,
         category,
         description,
+        userId,
         date
-    })
+    });
 
     try {
-        //validations
-        if(!title || !category || !description || !date){
-            return res.status(400).json({message: 'All fields are required!'})
+        if (!title || !category || !description || !date) {
+            return res.status(400).json({ message: 'All fields are required!' });
         }
-        if(amount <= 0 || !amount === 'number'){
-            return res.status(400).json({message: 'Amount must be a positive number!'})
+
+        if (amount <= 0 || !amount === 'number') {
+            return res.status(400).json({ message: 'Amount must be a positive number!' });
         }
-        await income.save()
-        res.status(200).json({message: 'Income Added'})
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+        const savedIncome = await income.save();
+        user.transactions = user.transactions || []; 
+        user.transactions.push(savedIncome._id)
+        await user.save();  
+       res.status(200).json({ message: 'income Added', expense: savedIncome });
     } catch (error) {
-        res.status(500).json({message: 'Server Error'})
+        console.error("Error adding income:", error);
+        res.status(500).json({ message: 'Server Error', error: error.message });
     }
+};
 
-    console.log(income)
-}
-
-exports.getIncomes = async (req, res) =>{
+exports.getIncomes = async (req, res) => {
     try {
-        const incomes = await IncomeSchema.find().sort({createdAt: -1})
-        res.status(200).json(incomes)
-    } catch (error) {
-        res.status(500).json({message: 'Server Error'})
-    }
-}
+        const { userId } = req.query;
+        if (!userId) {
+            return res.status(400).json({ message: 'userId is required' });
+        }
 
-exports.deleteIncome = async (req, res) =>{
-    const {id} = req.params;
-    IncomeSchema.findByIdAndDelete(id)
-        .then((income) =>{
-            res.status(200).json({message: 'Income Deleted'})
-        })
-        .catch((err) =>{
-            res.status(500).json({message: 'Server Error'})
-        })
-}
+        console.log("Checking userId:", userId);
+        const incomes = await IncomeSchema.find({ userId: userId }).sort({ createdAt: -1 });
+
+       
+        if (incomes.length === 0){
+            return res.status(404).json({ message: 'No incomes found for this user' });
+        }
+        
+        res.status(200).json(incomes);
+    } catch (error) {
+        console.error('Error fetching incomes:', error.message);
+        res.status(500).json({ message: 'Server Error', error: error.message });
+    }
+};
+
+exports.deleteIncome = async (req, res) => {
+    try {
+        const { id, userId } = req.params;  
+      console.log("id",userId)
+      console.log("item",id)
+       
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+       
+        const deletedIncome = await IncomeSchema.findByIdAndDelete(id);
+        if (!deletedIncome) {
+            return res.status(404).json({ message: 'income not found' });
+        }
+        user.incomes = user.transactions.filter((income) => income.toString() !== id.toString());
+        await user.save();  
+        res.status(200).json({ message: 'income Deleted' });
+
+    } catch (err) {
+        console.error("Error deleting income:", err);
+        res.status(500).json({ message: 'Server Error', error: err.message });
+    }
+};

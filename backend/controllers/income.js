@@ -3,14 +3,13 @@ const User =require('../models/UserModel')
 const mongoose = require('mongoose');
 exports.addIncome = async (req, res) => {
     const { title, amount, category, description, userId, date } = req.body;
-
-   
+  
     const income = new IncomeSchema({
         title,
         amount,
         category,
         description,
-        userId,
+        userId, 
         date
     });
 

@@ -4,7 +4,7 @@ import Login from './Components/Auth/Login';
 import Register from './Components/Auth/Register';
 import Home from './Home'
 const App = () => {
-  return (
+  return ( 
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
@@ -14,5 +14,4 @@ const App = () => {
     </BrowserRouter>
   );
 }
-
 export default App;

@@ -8,13 +8,20 @@ import Chart from '../Chart/Chart';
 
 function Dashboard() {
     const {totalExpenses,incomes, expenses, totalIncome, totalBalance, getIncomes, getExpenses } = useGlobalContext()
-
+    
     useEffect(() => {
-        getIncomes()
         if(localStorage.getItem('user')){
             const user = JSON.parse(localStorage.getItem('user'));
             if (user && user._id) {
                 getExpenses(user._id);  // Pass userId to getExpenses
+            } else {
+                console.error('No valid userId found in localStorage');
+            }
+        }
+        if(localStorage.getItem('user')){
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user._id) {
+                getIncomes(user._id);  // Pass userId to getExpenses
             } else {
                 console.error('No valid userId found in localStorage');
             }

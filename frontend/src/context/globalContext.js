@@ -29,7 +29,7 @@ export const GlobalProvider = ({children}) => {
         }
         } catch (err) {
             setError(err.response.data.message);
-        }
+        } 
     }
     const getIncomes= async (userId) => {
         console.log("correction",userId)

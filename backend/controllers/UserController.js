@@ -4,9 +4,7 @@ const bcrypt=require('bcrypt')
 exports.registerControllers = async (req, res) => {
     try{
         const {name, email, password} = req.body;
-
         // console.log(name, email, password);
-
         if(!name || !email || !password){
             return res.status(400).json({
                 success: false,
@@ -22,13 +20,9 @@ exports.registerControllers = async (req, res) => {
                 message: "User already Exists",
             });
         }
-
         const salt = await bcrypt.genSalt(10);
-
         const hashedPassword = await bcrypt.hash(password, salt);
-
         // console.log(hashedPassword);
-
         let newUser = await User.create({
             name, 
             email, 

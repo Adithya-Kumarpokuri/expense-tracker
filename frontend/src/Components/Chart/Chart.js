@@ -68,6 +68,8 @@ function Chart() {
     )
 }
 
+
+
 const ChartStyled = styled.div`
     background: #FCF6F9;
     border: 2px solid #FFFFFF;

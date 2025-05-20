@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
         required: [true, "Password is required"],
         minlength : [6, "Password Must Be Atleast 6 characters"],
     },
+    profilePicUrl: {
+    type: String,
+    default: "" // or link to default avatar.png
+  },
     transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Income' }],
     expenses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Expense' }],
     createdAt: {

@@ -10,7 +10,6 @@ function Expenses() {
     const {addIncome,expenses, getExpenses, deleteExpense, totalExpenses} = useGlobalContext()
 
     useEffect(() => {
-        
         if (localStorage.getItem('user')) {
             const user = JSON.parse(localStorage.getItem('user'));
             if (user && user._id){
@@ -19,7 +18,7 @@ function Expenses() {
             } else {
                 console.error('Invalid user data in localStorage');
             }
-        } else {
+        } else{
             console.error('No user found in localStorage');
         }
     }, []);

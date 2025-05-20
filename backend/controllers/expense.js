@@ -49,7 +49,6 @@ exports.getExpense = async (req, res) => {
         if (!userId) {
             return res.status(400).json({ message: 'userId is required' });
         }
-
         console.log("Checking userId:", userId);
         const expenses = await ExpenseSchema.find({ userId: userId }).sort({ createdAt: -1 });
         if (expenses.length === 0) {
@@ -64,7 +63,7 @@ exports.getExpense = async (req, res) => {
 
 exports.deleteExpense = async (req, res) => {
     try {
-        const { id, userId } = req.params;  
+      const { id, userId } = req.params;  
       console.log("id",userId)
       console.log("item",id)
 

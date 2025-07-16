@@ -1,1 +1,12 @@
-node_modules
+# Node.js folders
+backend/node_modules/
+frontend/node_modules/
+
+# dotenv
+backend/.env
+
+# general build caches
+.cache/
+dist/
+*.log
+

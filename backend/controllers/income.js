@@ -2,8 +2,8 @@ const IncomeSchema= require("../models/IncomeModel")
 const User =require('../models/UserModel')
 const mongoose = require('mongoose');
 exports.addIncome = async (req, res) => {
-    const { title, amount, category, description, userId, date } = req.body;
-  
+    const { title, amount, category, description,date } = req.body;
+    const userId = req.user._id;
     const income = new IncomeSchema({
         title,
         amount,
@@ -42,7 +42,7 @@ exports.addIncome = async (req, res) => {
 
 exports.getIncomes = async (req, res) => {
     try {
-        const { userId } = req.query;
+        const userId = req.user._id;
         if (!userId) {
             return res.status(400).json({ message: 'userId is required' });
         }
@@ -64,7 +64,8 @@ exports.getIncomes = async (req, res) => {
 
 exports.deleteIncome = async (req, res) => {
     try {
-        const { id, userId } = req.params;  
+        const { id} = req.params;  
+        const userId = req.user._id;
       console.log("id",userId)
       console.log("item",id)
        

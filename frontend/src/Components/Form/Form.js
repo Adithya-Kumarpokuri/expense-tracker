@@ -8,50 +8,77 @@ import { plus } from '../../utils/Icons';
 
 
 function Form() {
-    const [cUser, setCUser] = useState(null); 
-    useEffect(() => {
-        if (localStorage.getItem('user')) {
-            const user = JSON.parse(localStorage.getItem('user'));
-            setCUser(user);
-        }
-    }, []);
-    const {addIncome, getIncomes, error, setError} = useGlobalContext()
-    const [inputState, setInputState] = useState({
+    // const [cUser, setCUser] = useState(null); 
+    // useEffect(() => {
+    //     if (localStorage.getItem('user')) {
+    //         const user = JSON.parse(localStorage.getItem('user'));
+    //         setCUser(user);
+    //     }
+    // }, []);
+    // const {addIncome, getIncomes, error, setError} = useGlobalContext()
+    // const [inputState, setInputState] = useState({
+    //     title: '',
+    //     amount: '',
+    //     date: '',
+    //     category: '',
+    //     description: '',
+    //     userId:'',
+    // })
+
+    // const { title, amount, date, category,description,userId } = inputState;
+    // useEffect(() => {
+    //     if (cUser) {
+    //         setInputState(prevState => ({
+    //             ...prevState,
+    //             userId: cUser._id,
+    //         }));
+    //     }
+    // }, [cUser]);
+    // const handleInput = name => e => {
+    //     setInputState({...inputState, [name]: e.target.value})
+    //     setError('')
+    // }
+    
+    // const handleSubmit = e => {
+    //     e.preventDefault()
+    //     addIncome(inputState)
+    //     setInputState({
+    //         title: '',
+    //         amount: '',
+    //         date: '',
+    //         category: '',
+    //         description: '',
+    //         userId:cUser?._id||'',
+    //     })
+    // }
+   const [inputState, setInputState] = useState({
         title: '',
         amount: '',
         date: '',
         category: '',
         description: '',
-        userId:'',
-    })
+    });
 
-    const { title, amount, date, category,description,userId } = inputState;
-    useEffect(() => {
-        if (cUser) {
-            setInputState(prevState => ({
-                ...prevState,
-                userId: cUser._id,
-            }));
-        }
-    }, [cUser]);
+    const { title, amount, date, category, description } = inputState;
+    const { addIncome, error, setError } = useGlobalContext();
+
     const handleInput = name => e => {
-        setInputState({...inputState, [name]: e.target.value})
-        setError('')
-    }
-    
+        setInputState({ ...inputState, [name]: e.target.value });
+        setError('');
+    };
+
     const handleSubmit = e => {
-        e.preventDefault()
-        addIncome(inputState)
+        e.preventDefault();
+        addIncome(inputState);
         setInputState({
             title: '',
             amount: '',
             date: '',
             category: '',
             description: '',
-            userId:cUser?._id||'',
-        })
-    }
-
+        });
+    };
+    
     return (
         <FormStyled onSubmit={handleSubmit}>
             {error && <p className='error'>{error}</p>}

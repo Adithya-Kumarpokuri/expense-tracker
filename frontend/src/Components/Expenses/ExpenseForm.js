@@ -7,53 +7,116 @@ import Button from '../Button/Button';
 import { plus } from '../../utils/Icons';
 
 function ExpenseForm() {
-    const [cUser, setCUser] = useState(null); 
-    useEffect(() => {
-        if (localStorage.getItem('user')) {
-            const user = JSON.parse(localStorage.getItem('user'));
-            setCUser(user);
-        }
-    }, []);
+    // const [cUser, setCUser] = useState(null); 
+    // useEffect(() => {
+    //     if (localStorage.getItem('user')) {
+    //         const user = JSON.parse(localStorage.getItem('user'));
+    //         setCUser(user);
+    //     }
+    // }, []);
 
-    const { addExpense, error, setError } = useGlobalContext();
-    const [inputState, setInputState] = useState({
+    // const { addExpense, error, setError,totalExpenses,totalIncome } = useGlobalContext();
+    // const [inputState, setInputState] = useState({
+    //     title: '',
+    //     amount: '',
+    //     date: '',
+    //     category: '',
+    //     description: '',
+    //     userId: '',
+    // });
+
+    // const { title, amount, date, category, description, userId } = inputState;
+
+    
+    // useEffect(() => {
+    //     if (cUser) {
+    //         setInputState(prevState => ({
+    //             ...prevState,
+    //             userId: cUser._id,
+    //         }));
+    //     }
+    // }, [cUser]);
+
+    // const handleInput = name => e => {
+    //     setInputState({ ...inputState, [name]: e.target.value });
+    //     setError('');
+    // };
+
+    // const handleSubmit = e => {
+    //     e.preventDefault();
+    //     const numericAmount = parseFloat(amount);
+    // if (isNaN(numericAmount)) {
+    //     setError('Please enter a valid number for amount.');
+    //     return;
+    // }
+
+    // const income = totalIncome();     
+    // const expenses = totalExpenses();
+
+    // const limit = income * 0.8;
+    // const newTotal = expenses + numericAmount;
+    // console.log("expense limit",limit);
+    // if (newTotal > limit) {
+    //     setError(`❌ Budget limit exceeded! You can only spend ₹${(limit - expenses).toFixed(2)} more.`);
+    //     return;
+    // }
+    //     addExpense(inputState);
+    //     setInputState({
+    //         title: '',
+    //         amount: '',
+    //         date: '',
+    //         category: '',
+    //         description: '',
+    //         userId: cUser?._id || '',
+    // });
+    // }
+    const { addExpense, error, setError, totalExpenses, totalIncome } = useGlobalContext();
+
+const [inputState, setInputState] = useState({
+    title: '',
+    amount: '',
+    date: '',
+    category: '',
+    description: '',
+});
+
+const { title, amount, date, category, description } = inputState;
+
+const handleInput = name => e => {
+    setInputState({ ...inputState, [name]: e.target.value });
+    setError('');
+};
+
+const handleSubmit = e => {
+    e.preventDefault();
+    const numericAmount = parseFloat(amount);
+    if (isNaN(numericAmount)) {
+        setError('Please enter a valid number for amount.');
+        return;
+    }
+
+    const income = totalIncome();
+    const expenses = totalExpenses();
+    const limit = income * 0.8;
+    const newTotal = expenses + numericAmount;
+
+    if (newTotal > limit) {
+        setError(`❌ Budget limit exceeded! You can only spend ₹${(limit - expenses).toFixed(2)} more.`);
+        return;
+    }
+
+    // JWT will be sent in Authorization header inside addExpense function
+    addExpense(inputState);
+
+    setInputState({
         title: '',
         amount: '',
         date: '',
         category: '',
         description: '',
-        userId: '',
     });
+};
 
-    const { title, amount, date, category, description, userId } = inputState;
-
-    
-    useEffect(() => {
-        if (cUser) {
-            setInputState(prevState => ({
-                ...prevState,
-                userId: cUser._id,
-            }));
-        }
-    }, [cUser]);
-
-    const handleInput = name => e => {
-        setInputState({ ...inputState, [name]: e.target.value });
-        setError('');
-    };
-
-    const handleSubmit = e => {
-        e.preventDefault();
-        addExpense(inputState);
-        setInputState({
-            title: '',
-            amount: '',
-            date: '',
-            category: '',
-            description: '',
-            userId: cUser?._id || '',
-    });
-    }
     return (
         <ExpenseFormStyled onSubmit={handleSubmit}>
             {error && <p className="error">{error}</p>}

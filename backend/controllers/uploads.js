@@ -17,8 +17,8 @@ const User = require('../models/UserModel');
 exports.uploadProfilePic = async (req, res) => {
   try {
     const file = req.file;
-    const userId = req.body.userId;
-
+   // const userId = req.body.userId;
+   const userId = req.user._id;
     if (!file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }

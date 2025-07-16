@@ -2,8 +2,8 @@ const ExpenseSchema = require("../models/ExpenseModel")
 const User =require('../models/UserModel')
 const mongoose = require('mongoose');
 exports.addExpense = async (req, res) => {
-    const { title, amount, category, description, userId, date } = req.body;
-
+    const { title, amount, category, description, date } = req.body;
+    const userId = req.user._id;
     const expense = new ExpenseSchema({
         title,
         amount,
@@ -45,7 +45,7 @@ exports.addExpense = async (req, res) => {
 
 exports.getExpense = async (req, res) => {
     try {
-        const { userId } = req.query;
+        const userId = req.user._id;
         if (!userId) {
             return res.status(400).json({ message: 'userId is required' });
         }
@@ -63,7 +63,8 @@ exports.getExpense = async (req, res) => {
 
 exports.deleteExpense = async (req, res) => {
     try {
-      const { id, userId } = req.params;  
+      const { id} = req.params;  
+      const userId = req.user._id;
       console.log("id",userId)
       console.log("item",id)
 

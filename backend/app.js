@@ -15,7 +15,9 @@ app.use(cors())
 
 //routes
 readdirSync('./routes').map((route) => app.use('/api/v1', require('./routes/' + route)))
-
+app.get('/get', (req, res) => {
+  res.send('Hello, World!');
+});
 const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

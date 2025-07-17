@@ -277,7 +277,8 @@ import axios from 'axios';
 import {useNavigate} from "react-router-dom"
 import Swal from "sweetalert2";
 
-const BASE_URL = "http://localhost:5000/api/v1/";
+//const BASE_URL = "http://localhost:5000/api/v1/";
+const BASE_URL = "https://expense-tracker-yurd.onrender.com/api/v1/";
 
 function Navigation({ active, setActive, user }) {
     const navigate=useNavigate()

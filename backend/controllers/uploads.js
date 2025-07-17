@@ -23,7 +23,9 @@ exports.uploadProfilePic = async (req, res) => {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const imageUrl = `http://localhost:5000/uploads/${file.filename}`;
+    //const imageUrl = `http://localhost:5000/uploads/${file.filename}`;
+  const imageUrl = `https://expense-tracker-yurd.onrender.com/uploads/${file.filename}`;
+
 
     // ✅ Save imageUrl to DB
     const updatedUser = await User.findByIdAndUpdate(

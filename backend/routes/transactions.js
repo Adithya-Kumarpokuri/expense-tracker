@@ -5,7 +5,8 @@ const {getTransactions}=require('../controllers/transactions')
 const router = require('express').Router();
 const multer = require('multer');
 const { uploadProfilePic } = require('../controllers/uploads');
-const upload = multer({ dest: 'uploads/' });
+//const upload = multer({ dest: 'uploads/' });
+const upload = require('../utils/multer.js')
 const authMiddleware=require('../middlewares/authMiddleware')
 // router.post('/add-income', addIncome)
 //     .get('/get-incomes', getIncomes)

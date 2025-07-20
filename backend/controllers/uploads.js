@@ -1,6 +1,6 @@
-const cloudinary = require('../utils/cloudinary');
+//const cloudinary = require('../utils/cloudinary');
 const User = require('../models/UserModel');
-
+const cloudinary = require("cloudinary").v2;
 // exports.uploadProfilePic = async (req, res) => {
 //   try {
 //     const result = await cloudinary.uploader.upload(req.file.path);
@@ -24,10 +24,13 @@ exports.uploadProfilePic = async (req, res) => {
     }
 
     //const imageUrl = `http://localhost:5000/uploads/${file.filename}`;
-  const imageUrl = `https://expense-tracker-yurd.onrender.com/uploads/${file.filename}`;
-
-
-    // ✅ Save imageUrl to DB
+  // const imageUrl = `https://expense-tracker-yurd.onrender.com/uploads/${file.filename}`;
+  const imageUpload = await cloudinary.uploader.upload(file.path, {
+      resource_type: "image",
+    });
+    const imageUrl = imageUpload.secure_url;
+    
+  //   // ✅ Save imageUrl to DB
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { profilePicUrl: imageUrl },

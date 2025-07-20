@@ -4,7 +4,7 @@ const cors = require('cors');
 const { db } = require('./db/db');
 const {readdirSync} = require('fs')
 const app = express()
-
+const { connectCloudinary } = require('./utils/cloudinary');
 // require('dotenv').config()
 
 const PORT = process.env.PORT
@@ -23,6 +23,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const server = () => {
     db()
+    connectCloudinary()
     app.listen(PORT, () => {
         console.log('listening to port:', PORT)
     })

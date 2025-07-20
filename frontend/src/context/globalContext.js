@@ -3,9 +3,10 @@ import axios from 'axios'
 import { transactions } from "../utils/Icons";
 
 
-//const BASE_URL = "http://localhost:5000/api/v1/";
-const BASE_URL = "https://expense-tracker-yurd.onrender.com/api/v1/";
+//const BASE_URL = "http://localhost:5000/api/v1";
 
+
+const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1`;
 
 const GlobalContext = React.createContext()
 
@@ -153,7 +154,7 @@ const addIncome = async (income) => {
         const token = localStorage.getItem("token");
         const authHeader = { headers: { Authorization: `Bearer ${token}` } };
        console.log(token)
-        await axios.post(`${BASE_URL}add-income`, income, authHeader);
+        await axios.post(`${BASE_URL}/add-income`, income, authHeader);
         await getIncomes();
     } catch (err) {
         setError(err.response?.data?.message || "Failed to add income");
@@ -162,7 +163,7 @@ const addIncome = async (income) => {
 
 const getIncomes = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}get-incomes`, authHeader);
+        const response = await axios.get(`${BASE_URL}/get-incomes`, authHeader);
         setIncomes(response.data);
     } catch (error) {
         console.error("Error fetching incomes:", error);
@@ -171,7 +172,7 @@ const getIncomes = async () => {
 
 const deleteIncome = async (id) => {
     try {
-        await axios.delete(`${BASE_URL}delete-income/${id}`, authHeader);
+        await axios.delete(`${BASE_URL}/delete-income/${id}`, authHeader);
         await getIncomes();
     } catch (err) {
         console.error("Error deleting income:", err);
@@ -181,7 +182,7 @@ const deleteIncome = async (id) => {
 // ======================= Expense ============================
 const addExpense = async (expense) => {
     try {
-        await axios.post(`${BASE_URL}add-expense`, expense, authHeader);
+        await axios.post(`${BASE_URL}/add-expense`, expense, authHeader);
         await getExpenses();
     } catch (err) {
         setError(err.response?.data?.message || "Failed to add expense");
@@ -190,7 +191,7 @@ const addExpense = async (expense) => {
 
 const getExpenses = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}get-expenses`, authHeader);
+        const response = await axios.get(`${BASE_URL}/get-expenses`, authHeader);
         setExpenses(response.data);
     } catch (error) {
         console.error("Error fetching expenses:", error);
@@ -199,7 +200,7 @@ const getExpenses = async () => {
 
 const deleteExpense = async (id) => {
     try {
-        await axios.delete(`${BASE_URL}delete-expense/${id}`, authHeader);
+        await axios.delete(`${BASE_URL}/delete-expense/${id}`, authHeader);
         await getExpenses();
     } catch (err) {
         console.error("Error deleting expense:", err);
@@ -226,7 +227,7 @@ const getTransactions = async (filters = {}) => {
       }
     });
 
-    const url = `${BASE_URL}get-transactions?${params.toString()}`;
+    const url = `${BASE_URL}/get-transactions?${params.toString()}`;
     console.log("Request URL:", url);
 
     const response = await axios.get(url, authHeader);

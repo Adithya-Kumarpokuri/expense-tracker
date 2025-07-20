@@ -185,8 +185,10 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-//const BASE_URL = "http://localhost:5000/api/v1/";
-const BASE_URL = "https://expense-tracker-yurd.onrender.com/api/v1/";
+//const BASE_URL = "http://localhost:5000/api/v1";
+
+const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1`;
+
 
 const Register = () => {
   const navigate = useNavigate();
@@ -209,7 +211,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post(`${BASE_URL}register`, {
+      const { data } = await axios.post(`${BASE_URL}/register`, {
         name,
         email,
         password,

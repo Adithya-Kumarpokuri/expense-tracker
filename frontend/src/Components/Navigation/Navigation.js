@@ -277,8 +277,9 @@ import axios from 'axios';
 import {useNavigate} from "react-router-dom"
 import Swal from "sweetalert2";
 
-//const BASE_URL = "http://localhost:5000/api/v1/";
-const BASE_URL = "https://expense-tracker-yurd.onrender.com/api/v1/";
+//const BASE_URL = "http://localhost:5000/api/v1";
+
+const BASE_URL = `${process.env.REACT_APP_API_BASE_URL}/api/v1`;
 
 function Navigation({ active, setActive, user }) {
     const navigate=useNavigate()
@@ -308,7 +309,7 @@ function Navigation({ active, setActive, user }) {
         }
 
         try {
-            const res = await axios.post(`${BASE_URL}upload-profile-pic`, formData, {
+            const res = await axios.post(`${BASE_URL}/upload-profile-pic`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`,
